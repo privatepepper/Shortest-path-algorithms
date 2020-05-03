@@ -16,11 +16,20 @@ public:
     int cells_width = my_graph.width;
 
     QVector < QVector < int > > cells;
-
     void initialize_cells();
+    void update_cells();
 
-   // void update_cells();
+    //QString s; -> for testing
 
+private:
+
+    // update cell
+    bool done = false;
+    int start;
+    int end;
+    int index = 0;
+    QVector <int> path;
+    int index_draw_path = 0;
 };
 
 #endif // CELLS_LOGIC_H

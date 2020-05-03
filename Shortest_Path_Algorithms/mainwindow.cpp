@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update_cells()));
-    timer->start(100);
+    timer->start(50);
 }
 
 MainWindow::~MainWindow()
@@ -41,6 +41,9 @@ void MainWindow::initialize_scene()
 void MainWindow::reset_cells()
 {
     vec.initialize_cells();
+
+    // for testing purposes
+    //QMessageBox::about(this, "test", vec.s);
 
     cells.clear();
     cells.resize(width * height);
@@ -65,7 +68,6 @@ void MainWindow::initialize_cells()
             cells[y][x] = inner_cell;
         }
     }
-
 }
 
 
@@ -90,7 +92,19 @@ void MainWindow::update_cells()
             }
         }
     }
+    if (cells_selected >= 2){
+        vec.update_cells();
+        for (int y = 0; y < height; y++){
+            for(int x = 0; x < width; x++){
+                if (vec.cells[y][x] == 1){
+                    cells[y][x]->setBrush(Qt::blue);
+                }
 
-
+                if (vec.cells[y][x] == 2){
+                    cells[y][x]->setBrush(Qt::white);
+                }
+            }
+        }
+    }
 }
 

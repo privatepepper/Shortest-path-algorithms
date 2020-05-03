@@ -11,10 +11,8 @@ public:
 
     Graph();
 
-    QVector <int> *matrix;
-
-    int width = 20;
-    int height = 15;
+    int width = 80;
+    int height = 60;
 
     int Vertices;
 
@@ -25,18 +23,17 @@ public:
 
     void addEdge(int vertice1, int vertice2){
         matrix[vertice1].push_back(vertice2);
-        matrix[vertice2].push_back(vertice1);
     }
 
-    void dijkstra_algorithm();
+    QVector <int> store_searching_path;
+    QVector <int> store_path;
 
-    QVector <int> finding_end_point;
+    bool BFS(int start, int end);
+    void dijkstra_algorithm();
 
 private:
 
-    QPair<int, int> update();
-    void BFS(int s);
-
+    QVector <int> *matrix;
 };
 
 #endif // GRAPH_H
@@ -61,11 +58,15 @@ private:
 //    QList <int> *n_e_w = Adjacency_list;
 //    return n_e_w;
 //}
+
+//}
+
+
 //QString printGraph(){
 //    QString s;
-//    for(int i = 0; i < vertices; i++){
+//    for(int i = 0; i < Vertices; i++){
 //        s.append(QString::number(i) + "=> ");
-//        for (auto it : Adjacency_list[i]){
+//        for (auto it : matrix[i]){
 //            s.append(QString::number(it) + ", ");
 //        }
 //        s.append("\n");
