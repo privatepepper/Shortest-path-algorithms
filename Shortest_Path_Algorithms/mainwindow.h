@@ -2,6 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QtCore>
+#include <QtGui>
+#include <QtWidgets>
+#include <QWidget>
+#include "cells_logic.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +22,33 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    cells_logic vec;
+
+    int height = vec.cells_height;
+    int width = vec.cells_width;
+
+    int inner_cell_width = 800 / width;
+    int inner_cell_height = 600 / height;
+
+    QGraphicsScene *scene;
+    void initialize_scene();
+
+    QGraphicsRectItem *rect;
+    void initialize_cells();
+    void reset_cells();
+
+    QTimer *timer;
+
+    QVector <QVector < QGraphicsRectItem* > > cells;
+
+    int cells_selected = 0;
+
+
+private slots:
+
+    void update_cells();
+
+
 };
 #endif // MAINWINDOW_H
