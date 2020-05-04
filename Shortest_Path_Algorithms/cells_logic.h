@@ -19,6 +19,9 @@ public:
     void initialize_cells();
     void update_cells();
 
+
+    void add_eges();
+
     //QString s; -> for testing
 
 private:
@@ -31,6 +34,7 @@ private:
     QVector <int> path;
     int index_draw_path = 0;
     void breadth_first_search();
+
 };
 
 #endif // CELLS_LOGIC_H

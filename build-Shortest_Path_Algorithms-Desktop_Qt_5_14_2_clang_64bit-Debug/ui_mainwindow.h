@@ -11,7 +11,9 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSlider>
@@ -27,6 +29,9 @@ public:
     QVBoxLayout *verticalLayout;
     QSlider *horizontalSlider;
     QGraphicsView *graphicsView;
+    QHBoxLayout *horizontalLayout;
+    QComboBox *comboBox;
+    QPushButton *pushButton_2;
     QPushButton *pushButton;
 
     void setupUi(QMainWindow *MainWindow)
@@ -2339,10 +2344,25 @@ public:
 
         verticalLayout->addWidget(graphicsView);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        comboBox = new QComboBox(centralwidget);
+        comboBox->setObjectName(QString::fromUtf8("comboBox"));
+
+        horizontalLayout->addWidget(comboBox);
+
+        pushButton_2 = new QPushButton(centralwidget);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+
+        horizontalLayout->addWidget(pushButton_2);
+
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
 
-        verticalLayout->addWidget(pushButton);
+        horizontalLayout->addWidget(pushButton);
+
+
+        verticalLayout->addLayout(horizontalLayout);
 
         MainWindow->setCentralWidget(centralwidget);
 
@@ -2354,6 +2374,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Clear", nullptr));
     } // retranslateUi
 

@@ -1216,6 +1216,7 @@ moc_mainwindow.cpp: ../Shortest_Path_Algorithms/mainwindow.h \
 		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../Shortest_Path_Algorithms/cells_logic.h \
 		../Shortest_Path_Algorithms/graph.h \
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
 		moc_predefs.h \
 		/Users/L/Qt/5.14.2/clang_64/bin/moc
 	/Users/L/Qt/5.14.2/clang_64/bin/moc $(DEFINES) --include /Users/L/Documents/C++/Projects/Shortest-path-algorithms/build-Shortest_Path_Algorithms-Desktop_Qt_5_14_2_clang_64bit-Debug/moc_predefs.h -I/Users/L/Qt/5.14.2/clang_64/mkspecs/macx-clang -I/Users/L/Documents/C++/Projects/Shortest-path-algorithms/Shortest_Path_Algorithms -I/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers -I/Users/L/Qt/5.14.2/clang_64/lib/QtGui.framework/Headers -I/Users/L/Qt/5.14.2/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/11.0.3/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -F/Users/L/Qt/5.14.2/clang_64/lib ../Shortest_Path_Algorithms/mainwindow.h -o moc_mainwindow.cpp
@@ -1532,7 +1533,8 @@ cells_logic.o: ../Shortest_Path_Algorithms/cells_logic.cpp ../Shortest_Path_Algo
 		/Users/L/Qt/5.14.2/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
 		/Users/L/Qt/5.14.2/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
 		../Shortest_Path_Algorithms/graph.h \
-		/Users/L/Qt/5.14.2/clang_64/lib/QtCore.framework/Headers/QTimer
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cells_logic.o ../Shortest_Path_Algorithms/cells_logic.cpp
 
 graph.o: ../Shortest_Path_Algorithms/graph.cpp ../Shortest_Path_Algorithms/graph.h \
@@ -2246,6 +2248,7 @@ main.o: ../Shortest_Path_Algorithms/main.cpp ../Shortest_Path_Algorithms/mainwin
 		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../Shortest_Path_Algorithms/cells_logic.h \
 		../Shortest_Path_Algorithms/graph.h \
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
 		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Shortest_Path_Algorithms/main.cpp
 
@@ -2670,7 +2673,9 @@ mainwindow.o: ../Shortest_Path_Algorithms/mainwindow.cpp ../Shortest_Path_Algori
 		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		../Shortest_Path_Algorithms/cells_logic.h \
 		../Shortest_Path_Algorithms/graph.h \
-		ui_mainwindow.h
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QGraphicsSceneMouseEvent \
+		ui_mainwindow.h \
+		/Users/L/Qt/5.14.2/clang_64/lib/QtWidgets.framework/Headers/QSlider
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Shortest_Path_Algorithms/mainwindow.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

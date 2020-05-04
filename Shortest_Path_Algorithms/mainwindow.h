@@ -19,7 +19,8 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+
+
 
 private:
     Ui::MainWindow *ui;
@@ -44,6 +45,10 @@ private:
     QTimer *timer;
     int timer_speed = 0;
 
+    bool boolean_start = false;
+    bool add_edge_one_time = true;
+
+
 private slots:
 
     void update_cells();
@@ -51,8 +56,11 @@ private slots:
     void change_speed();
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+
 protected:
 
-    //void mousePressEvent(QGraphicsSceneMouseEvent *mouseevent) override;
+    void keyPressEvent(QKeyEvent *event);
 };
 #endif // MAINWINDOW_H

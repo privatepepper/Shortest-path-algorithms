@@ -11,8 +11,8 @@ public:
 
     Graph();
 
-    int width = 80;
-    int height = 60;
+    int width = 16;
+    int height = 12;
 
     int Vertices;
 

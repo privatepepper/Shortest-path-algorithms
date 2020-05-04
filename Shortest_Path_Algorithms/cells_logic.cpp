@@ -17,7 +17,6 @@ void cells_logic::initialize_cells()
 
     cells.resize(cells_width * cells_height);
 
-    int count = 0;
     done = false;
 
     for (int y = 0; y < cells_height; y++){
@@ -25,27 +24,6 @@ void cells_logic::initialize_cells()
 
             // all cells wasn't visited or modifed yet
             cells[y].push_back(0);
-
-            // add edges to the graph
-
-            if (x != 0){
-                my_graph.addEdge(count, count - 1);
-            }
-
-            if (x != cells_width - 1){
-                my_graph.addEdge(count, count + 1);
-            }
-
-            if (y != 0){
-                my_graph.addEdge(count, count - cells_width);
-            }
-
-            if (y != cells_height - 1){
-                my_graph.addEdge(count, count + cells_width);
-            }
-
-            // move to the next cell
-            count++;
 
         }
     }
@@ -91,11 +69,40 @@ void cells_logic::breadth_first_search()
     } else {
         if (index_draw_path >= 0){
             QPair <int, int> coordinates = {path[index_draw_path] / cells_width, path[index_draw_path] % cells_width};
-            cells[coordinates.first][coordinates.second] = 2;
+            cells[coordinates.first][coordinates.second] = 3;
             index_draw_path--;
         }
     }
 }
+
+void cells_logic::add_eges()
+{
+    int count = 0;
+    for (int y = 0; y < cells_height; y++){
+        for (int x = 0; x < cells_width; x++){
+            if (x != 0 && cells[y][x - 1] != 2){
+                my_graph.addEdge(count, count - 1);
+            }
+
+            if (x != cells_width - 1 && cells[y][x + 1] != 2){
+                my_graph.addEdge(count, count + 1);
+            }
+
+            if (y != 0 && cells[y - 1][x] != 2){
+                my_graph.addEdge(count, count - cells_width);
+            }
+
+            if (y != cells_height - 1 && cells[y + 1][x] != 2){
+                my_graph.addEdge(count, count + cells_width);
+            }
+
+            // move to the next cell
+            count++;
+        }
+    }
+}
+
+
 
 
 

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QSlider>
 
+#define wall 2;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,11 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(change_speed()));
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
 void MainWindow::initialize_scene()
 {
     rect = new QGraphicsRectItem(0, 0,800, 600);
@@ -41,6 +38,8 @@ void MainWindow::reset_cells()
 {
     vec.initialize_cells();
     cells_selected = 0;
+    add_edge_one_time = true;
+    boolean_start = false;
 
     // for testing purposes
     //QMessageBox::about(this, "test", vec.s);
@@ -93,15 +92,21 @@ void MainWindow::update_cells()
             }
         }
     }
-    if (cells_selected >= 2){
+    if (boolean_start){
+        if (add_edge_one_time){
+            vec.add_eges();
+            add_edge_one_time = false;
+        }
+
         vec.update_cells();
         for (int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
+
                 if (vec.cells[y][x] == 1){
                     cells[y][x]->setBrush(Qt::blue);
                 }
 
-                if (vec.cells[y][x] == 2){
+                if (vec.cells[y][x] == 3){
                     cells[y][x]->setBrush(Qt::white);
                 }
             }
@@ -109,21 +114,44 @@ void MainWindow::update_cells()
     }
 }
 
-void MainWindow::change_speed()
-{
+void MainWindow::change_speed(){
+
     timer_speed = ui->horizontalSlider->value();
     timer->start(timer_speed);
 
 }
 
-void MainWindow::on_pushButton_clicked()
-{
+void MainWindow::on_pushButton_clicked(){
+
     scene->clear();
     initialize_scene();
     initialize_cells();
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event){
 
+    if (event->key() == Qt::Key_Space){
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+
+                if (cells[y][x]->isUnderMouse()){
+                    cells[y][x]->setBrush(Qt::red);
+                    vec.cells[y][x] = wall;
+                }
+
+            }
+        }
+    }
+
+}
+
+
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    boolean_start = true;
+}
 
 
 
