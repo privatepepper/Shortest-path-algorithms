@@ -30,6 +30,7 @@ private:
     int index = 0;
     QVector <int> path;
     int index_draw_path = 0;
+    void breadth_first_search();
 };
 
 #endif // CELLS_LOGIC_H

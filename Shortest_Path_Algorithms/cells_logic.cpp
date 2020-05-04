@@ -10,11 +10,15 @@ cells_logic::cells_logic()
 
 void cells_logic::initialize_cells()
 {
+    cells.clear();
     my_graph.initialize_matrix(cells_width * cells_height);
+    index = 0;
+    path.clear();
 
     cells.resize(cells_width * cells_height);
 
     int count = 0;
+    done = false;
 
     for (int y = 0; y < cells_height; y++){
         for (int x = 0; x < cells_width; x++){
@@ -48,6 +52,11 @@ void cells_logic::initialize_cells()
 }
 
 void cells_logic::update_cells()
+{
+    breadth_first_search();
+}
+
+void cells_logic::breadth_first_search()
 {
     if (!done){
         for (int y = 0; y < cells_height; y++){
@@ -89,7 +98,7 @@ void cells_logic::update_cells()
 }
 
 
-// divide update_cells function to little piecies
+
 
 
 

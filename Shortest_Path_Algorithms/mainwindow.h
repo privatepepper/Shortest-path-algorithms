@@ -7,6 +7,7 @@
 #include <QtWidgets>
 #include <QWidget>
 #include "cells_logic.h"
+#include <QGraphicsSceneMouseEvent>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,9 +42,17 @@ private:
     int cells_selected = 0;
 
     QTimer *timer;
+    int timer_speed = 0;
 
 private slots:
 
     void update_cells();
+
+    void change_speed();
+    void on_pushButton_clicked();
+
+protected:
+
+    //void mousePressEvent(QGraphicsSceneMouseEvent *mouseevent) override;
 };
 #endif // MAINWINDOW_H

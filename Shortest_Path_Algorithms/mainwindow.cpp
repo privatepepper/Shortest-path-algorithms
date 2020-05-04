@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QSlider>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -11,14 +12,12 @@ MainWindow::MainWindow(QWidget *parent)
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-    this->setStyleSheet("background-color: rgb(39, 35, 36) ");
-    scene->setBackgroundBrush(QColor(39, 35, 36));
-
     initialize_scene();
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update_cells()));
-    timer->start(50);
+    timer->start(timer_speed);
+    connect(ui->horizontalSlider, SIGNAL(valueChanged(int)), this, SLOT(change_speed()));
 }
 
 MainWindow::~MainWindow()
@@ -41,6 +40,7 @@ void MainWindow::initialize_scene()
 void MainWindow::reset_cells()
 {
     vec.initialize_cells();
+    cells_selected = 0;
 
     // for testing purposes
     //QMessageBox::about(this, "test", vec.s);
@@ -56,6 +56,7 @@ void MainWindow::reset_cells()
     }
 
 }
+
 
 void MainWindow::initialize_cells()
 {
@@ -107,4 +108,23 @@ void MainWindow::update_cells()
         }
     }
 }
+
+void MainWindow::change_speed()
+{
+    timer_speed = ui->horizontalSlider->value();
+    timer->start(timer_speed);
+
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    scene->clear();
+    initialize_scene();
+    initialize_cells();
+}
+
+
+
+
+
 

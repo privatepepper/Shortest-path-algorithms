@@ -18,6 +18,9 @@ public:
 
     void initialize_matrix(int nodes){
         Vertices = nodes;
+        matrix->clear();
+        store_searching_path.clear();
+        store_path.clear();
         matrix = new QVector <int> [nodes];
     }
 
