@@ -17,7 +17,7 @@ public:
 
     QVector < QVector < int > > cells;
     void initialize_cells();
-    void update_cells();
+    void update_cells(QString s);
 
 
     void add_eges();
@@ -33,7 +33,23 @@ private:
     int index = 0;
     QVector <int> path;
     int index_draw_path = 0;
+
+    void initialize_algorithm(int algorithm_name);
+
+    // algorithms
     void breadth_first_search();
+
+    void Depth_First_Search();
+
+    void Dijkstra_algorithm();
+
+    void Heuristic_algorithm();
+    void highlighter(int current_node);
+
+    bool path_drawn = false;
+    void shortest_path();
+
+
 
 };
 

@@ -11,17 +11,23 @@ public:
 
     Graph();
 
-    int width = 16;
-    int height = 12;
+    int width = 40;
+    int height = 30;
 
     int Vertices;
+    QVector <QVector <int> > matrix;
 
     void initialize_matrix(int nodes){
         Vertices = nodes;
-        matrix->clear();
+
+        if (matrix.size() != 0){
+            matrix.clear();
+            visited.clear();
+        }
+
         store_searching_path.clear();
         store_path.clear();
-        matrix = new QVector <int> [nodes];
+        matrix.resize(nodes);
     }
 
     void addEdge(int vertice1, int vertice2){
@@ -32,51 +38,26 @@ public:
     QVector <int> store_path;
 
     bool BFS(int start, int end);
-    void dijkstra_algorithm();
+    bool DFS(int start, int end);
+    bool dijkstra_algorithm(int start, int end);
+    bool heuristic_algorithm(int start, int end);
 
 private:
 
-    QVector <int> *matrix;
+
+    QVector <int> dist;
+    QVector <bool> visited;
+    bool recursive_DFS(int source, int end);
+    bool found_end = false;
+
 };
 
 #endif // GRAPH_H
 
 
-//private:
-//int vertices;
-//QList <int> *Adjacency_list;
-
-//public:
-
-//Graph(int V){
-//    this->vertices = V;
-//    Adjacency_list = new QList <int> [V];
-//}
-
-//void addEdge(int u, int v){
-//    Adjacency_list[u].push_back(v);
-//    Adjacency_list[v].push_back(u);
-//}
-//QList <int>  *get_list(){
-//    QList <int> *n_e_w = Adjacency_list;
-//    return n_e_w;
-//}
-
-//}
 
 
-//QString printGraph(){
-//    QString s;
-//    for(int i = 0; i < Vertices; i++){
-//        s.append(QString::number(i) + "=> ");
-//        for (auto it : matrix[i]){
-//            s.append(QString::number(it) + ", ");
-//        }
-//        s.append("\n");
 
-//    }
-//    return s;
-//}
 
 
 

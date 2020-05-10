@@ -20,8 +20,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
-
-
 private:
     Ui::MainWindow *ui;
 
@@ -47,6 +45,15 @@ private:
 
     bool boolean_start = false;
     bool add_edge_one_time = true;
+
+    // colors
+    QBrush inner_cells_brush;
+    QBrush start_brush;
+    QBrush end_brush;
+    QBrush path_finding_visualization;
+    QBrush shortest_path_visualization;
+    QBrush walls_brush;
+
 
 
 private slots:
