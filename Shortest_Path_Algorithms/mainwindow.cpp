@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItem("Breadth-first Search");
     ui->comboBox->addItem("Dijkstra's algorithm");
     ui->comboBox->addItem("Depth-first Searsh");
-    ui->comboBox->addItem("A* Search");
+    ui->comboBox->addItem("Breadth-first Search.2");
     ui->comboBox->addItem("Heuristic Search");
     for (int i = 0; i < ui->comboBox->count(); i++){
         ui->comboBox->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
@@ -61,9 +61,6 @@ void MainWindow::reset_cells()
     cells_selected = 0;
     add_edge_one_time = true;
     boolean_start = false;
-
-    // for testing purposes
-    //QMessageBox::about(this, "test", vec.s);
 
     cells.clear();
     cells.resize(width * height);
@@ -119,22 +116,28 @@ void MainWindow::update_cells()
             vec.add_eges();
             add_edge_one_time = false;
         }
-
         vec.update_cells(ui->comboBox->lineEdit()->text());
         for (int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
 
-                if (vec.cells[y][x] == 1){
+                if (vec.cells[y][x] == 0)
+                    cells[y][x]->setBrush(inner_cells_brush);
+
+                if (vec.cells[y][x] == 1)
                     cells[y][x]->setBrush(path_finding_visualization);
-                }
+
+                if (vec.cells[y][x] == -1)
+                    cells[y][x]->setBrush(Qt::red);
+
                 // shortest path
-                if (vec.cells[y][x] == 3){
+                if (vec.cells[y][x] == 3)
                     cells[y][x]->setBrush(shortest_path_visualization);
-                }
+
             }
         }
     }
 }
+
 
 void MainWindow::change_speed(){
 
@@ -177,6 +180,7 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 // fix clear button
+
 
 
 

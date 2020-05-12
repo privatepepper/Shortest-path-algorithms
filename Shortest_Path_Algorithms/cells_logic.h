@@ -43,6 +43,8 @@ private:
 
     void Dijkstra_algorithm();
 
+    void Breadth_first_Search_2();
+
     void Heuristic_algorithm();
     void highlighter(int current_node);
 

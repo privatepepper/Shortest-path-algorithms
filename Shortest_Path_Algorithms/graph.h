@@ -26,6 +26,7 @@ public:
         }
 
         store_searching_path.clear();
+        store_searching_path1.clear();
         store_path.clear();
         matrix.resize(nodes);
     }
@@ -35,20 +36,28 @@ public:
     }
 
     QVector <int> store_searching_path;
+    QVector <int> store_searching_path1;
     QVector <int> store_path;
 
     bool BFS(int start, int end);
     bool DFS(int start, int end);
     bool dijkstra_algorithm(int start, int end);
     bool heuristic_algorithm(int start, int end);
+    bool Double_BFS(int start, int end);
 
 private:
 
 
     QVector <int> dist;
     QVector <bool> visited;
+    QVector <bool> visited1;
     bool recursive_DFS(int source, int end);
     bool found_end = false;
+    int end_y;
+    int end_x;
+    QVector <QVector <int> > direction_vertice;
+    QVector <QPair <int, int>> smallest_cell_value(int current_vertice);
+    bool collided();
 
 };
 
