@@ -2,28 +2,30 @@
 #include "graph.h"
 #include <QMessageBox>
 
+#define visualize_path 3
+#define cell_visualize_searching 1
+
 cells_logic::cells_logic() {
 
 }
 
 void cells_logic::initialize_cells() {
-    cells.clear();
+
     my_graph.initialize_matrix(cells_width * cells_height);
-    index = 0;
+
     path.clear();
     path1.clear();
-
+    cells.clear();
     cells.resize(cells_width * cells_height);
 
+    index = 0;
     done = false;
-    path_drawn = false;
 
     for (int y = 0; y < cells_height; y++){
         for (int x = 0; x < cells_width; x++){
 
             // all cells wasn't visited or modifed yet
             cells[y].push_back(0);
-
         }
     }
 }
@@ -45,8 +47,6 @@ void cells_logic::update_cells(QString algorithm) {
         Heuristic_algorithm();
     if (algorithm == "Breadth-first Search.2")
         Breadth_first_Search_2();
-
-
 }
 
 
@@ -90,210 +90,163 @@ void cells_logic::initialize_algorithm(int algorithm_name)
                 end = (y * cells_width) + x;
         }
     }
-    // BFS
-    if (algorithm_name == 0)
-        my_graph.BFS(start, end);
 
-    // DFS
-    if (algorithm_name == 1)
-        my_graph.DFS(start, end);
+    switch (algorithm_name) {
 
-    // Dijkstra
-    if (algorithm_name == 2)
-        my_graph.dijkstra_algorithm(start, end);
+        case 0:my_graph.BFS(start, end);break;
 
-    // Heuristic
-    if (algorithm_name == 3)
-        my_graph.heuristic_algorithm(start, end);
+        case 1:my_graph.DFS(start, end);break;
 
-    // BFS.2
-    if (algorithm_name == 4)
-        my_graph.Double_BFS(start, end);
+        case 2:my_graph.dijkstra_algorithm(start, end);break;
 
+        case 3:my_graph.heuristic_algorithm(start, end);break;
 
+        case 4:my_graph.Double_BFS(start, end);break;
+    }
 }
 
-// Algorithms
+
 
 void cells_logic::breadth_first_search() {
     if (!done){
+
         initialize_algorithm(0);
         done = true;
-        shortest_path();
+        shortest_path(end, path, index_draw_path, my_graph.store_path);   
     }
 
     if (index < my_graph.store_searching_path.size() - 1){
-        int vertex = my_graph.store_searching_path[index];
+
+        visualize_searching(my_graph.store_searching_path);
         index++;
 
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
     } else {
-        if (index_draw_path > 0){
-            QPair <int, int> coordinates = {path[index_draw_path] / cells_width, path[index_draw_path] % cells_width};
-            cells[coordinates.first][coordinates.second] = 3;
-            index_draw_path--;
-        }
+
+        if (index_draw_path > 0)
+            draw_path(index_draw_path, path);
     }
 }
+
+
 
 void cells_logic::Depth_First_Search() {
 
     if (!done){
+
         initialize_algorithm(1);
         done = true;
+
     }
 
-    if (index < my_graph.store_searching_path.size() - 1 && !path_drawn){
-        int vertex = my_graph.store_searching_path[index];
+    if (index < my_graph.store_searching_path.size() - 1){
+
+        visualize_searching(my_graph.store_searching_path);
         index++;
 
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
-        if (index == my_graph.store_searching_path.size() - 1)
-            path_drawn = true;
     }
-    if (path_drawn && index > 0){
-
-        int vertex = my_graph.store_searching_path[index - 1];
-        index--;
-
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 3;
-    }
-
-
-
 }
+
+
 
 void cells_logic::Dijkstra_algorithm() {
 
     if (!done){
         initialize_algorithm(2);
         done = true;
-        shortest_path();
-    }
-    if (index < my_graph.store_searching_path.size() - 1 && !path_drawn){
-        int vertex = my_graph.store_searching_path[index];
-        index++;
-
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
-        if (index == my_graph.store_searching_path.size() - 1)
-            path_drawn = true;
-    }   else {
-        if (index_draw_path > 0){
-            QPair <int, int> coordinates = {path[index_draw_path] / cells_width, path[index_draw_path] % cells_width};
-            cells[coordinates.first][coordinates.second] = 3;
-            index_draw_path--;
-        }
-    }
-
-}
-
-// 1 2 3 4
-// 5 6 7 8
-// 9 10 11 12
-// 13 14 15 16
-void cells_logic::Heuristic_algorithm()
-{
-    if (!done){
-        initialize_algorithm(3);
-        done = true;
+        shortest_path(end, path, index_draw_path, my_graph.store_path);
     }
     if (index < my_graph.store_searching_path.size() - 1){
 
-        int vertex = my_graph.store_searching_path[index];
+        visualize_searching(my_graph.store_searching_path);
         index++;
 
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        if (vertex != end)
-            cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
+    }   else {
+
+        if (index_draw_path > 0)
+           draw_path(index_draw_path, path);
 
     }
 
 }
 
-void cells_logic::shortest_path()
+
+
+void cells_logic::Heuristic_algorithm()
 {
-    // find shortest path
-    int vertex = end;
-    path.push_back(end);
+    if (!done){
 
-    while (my_graph.store_path[vertex] != -1){
-        path.push_back(my_graph.store_path[vertex]);
-        vertex = my_graph.store_path[vertex];
+        initialize_algorithm(3);
+        done = true;
+
+    }
+    if (index < my_graph.store_searching_path.size() - 1){
+
+        visualize_searching(my_graph.store_searching_path);
+        index++;
+
     }
 
-    index_draw_path = path.size() - 2;
 }
+
+
 
 void cells_logic::Breadth_first_Search_2(){
 
     if (!done){
+
         initialize_algorithm(4);
+        shortest_path(my_graph.last_vertice, path, index_draw_path, my_graph.store_path);
+        shortest_path(my_graph.last_vertice, path1, index_draw_path1, my_graph.store_path1);
         done = true;
-
-        int vertex = my_graph.last_vertice;
-        path.push_back(my_graph.last_vertice);
-
-        while (my_graph.store_path[vertex] != -1){
-            path.push_back(my_graph.store_path[vertex]);
-            vertex = my_graph.store_path[vertex];
-        }
-
-        index_draw_path = path.size() - 2;
-
-        int vertex1 = my_graph.last_vertice;
-        path1.push_back(my_graph.last_vertice);
-
-        while (my_graph.store_path1[vertex1] != -1){
-            path1.push_back(my_graph.store_path1[vertex1]);
-            vertex1 = my_graph.store_path1[vertex1];
-        }
-
-        index_draw_path1 = path1.size() - 2;
     }
 
+    if (index < my_graph.store_searching_path.size() - 1){
 
+        visualize_searching(my_graph.store_searching_path);
 
-    if (index < my_graph.store_searching_path.size() - 1 && !path_drawn){
-
-        if (my_graph.store_searching_path1.size() > index){
-
-            int vertex1 = my_graph.store_searching_path1[index];
-            QPair <int, int> coordinates_of_vertex1 = {vertex1 / cells_width, vertex1 % cells_width};
-            cells[coordinates_of_vertex1.first][coordinates_of_vertex1.second] = -1;
-
-        }
-
-        int vertex = my_graph.store_searching_path[index];
-        QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
-
+        if (my_graph.store_searching_path1.size() > index)
+            visualize_searching(my_graph.store_searching_path1);
         index++;
-
-        if (index == my_graph.store_searching_path.size() - 1)
-            path_drawn = true;
-
     }   else {
 
-        if (index_draw_path >= 0){
-            QPair <int, int> coordinates = {path[index_draw_path] / cells_width, path[index_draw_path] % cells_width};
-            cells[coordinates.first][coordinates.second] = 3;
-            index_draw_path--;
-        }
+        if (index_draw_path >= 0)
+            draw_path(index_draw_path, path);
 
-        if (index_draw_path1 > 0) {
-        QPair <int, int> coordinates1 = {path1[index_draw_path1] / cells_width, path1[index_draw_path1] % cells_width};
-        cells[coordinates1.first][coordinates1.second] = 3;
-        index_draw_path1--;
-
-        }
-
+        if (index_draw_path1 > 0)
+            draw_path(index_draw_path1, path1);
     }
 }
 
 
 
-//
+void cells_logic::draw_path(int &Index, QVector<int> Path) {
+
+    QPair <int, int> coordinates = {Path[Index] / cells_width, Path[Index] % cells_width};
+    cells[coordinates.first][coordinates.second] = visualize_path;
+    Index--;
+}
+
+void cells_logic::visualize_searching(QVector <int> stored_path){
+
+    int vertex = stored_path[index];
+    QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
+    cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = cell_visualize_searching;
+
+}
+
+void cells_logic::shortest_path(int destination, QVector <int> &Path, int &Path_size, QVector <int> Store_path){
+
+    int vertex = destination;
+    Path.push_back(destination);
+
+    while (Store_path[vertex] != -1){
+        Path.push_back(Store_path[vertex]);
+        vertex = Store_path[vertex];
+    }
+
+    Path_size = Path.size() - 2;
+}
+
+
+
+

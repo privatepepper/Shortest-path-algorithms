@@ -16,43 +16,39 @@ public:
     int cells_width = my_graph.width;
 
     QVector < QVector < int > > cells;
+
     void initialize_cells();
     void update_cells(QString s);
-
-
     void add_eges();
-
-    //QString s; -> for testing
 
 private:
 
-    // update cell
-    bool done = false;
     int start;
     int end;
+
     int index = 0;
+    bool done = false;
+
     QVector <int> path;
     QVector <int> path1;
+
     int index_draw_path = 0;
     int index_draw_path1 = 0;
 
+    // algorithms
     void initialize_algorithm(int algorithm_name);
 
-    // algorithms
     void breadth_first_search();
-
     void Depth_First_Search();
-
     void Dijkstra_algorithm();
-
     void Breadth_first_Search_2();
-
     void Heuristic_algorithm();
-    void highlighter(int current_node);
 
-    bool path_drawn = false;
-    void shortest_path();
 
+
+    void shortest_path(int destination, QVector <int> &Path, int &Path_size, QVector <int> Store_path);
+    void draw_path(int &index, QVector <int> path);
+    void visualize_searching(QVector <int> stored_path);
 
 
 };
