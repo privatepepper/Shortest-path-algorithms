@@ -11,6 +11,7 @@ void cells_logic::initialize_cells() {
     my_graph.initialize_matrix(cells_width * cells_height);
     index = 0;
     path.clear();
+    path1.clear();
 
     cells.resize(cells_width * cells_height);
 
@@ -232,39 +233,67 @@ void cells_logic::Breadth_first_Search_2(){
     if (!done){
         initialize_algorithm(4);
         done = true;
-       // reverse_index = my_graph.store_searching_path.size() - 1;
-        shortest_path();
+
+        int vertex = my_graph.last_vertice;
+        path.push_back(my_graph.last_vertice);
+
+        while (my_graph.store_path[vertex] != -1){
+            path.push_back(my_graph.store_path[vertex]);
+            vertex = my_graph.store_path[vertex];
+        }
+
+        index_draw_path = path.size() - 2;
+
+        int vertex1 = my_graph.last_vertice;
+        path1.push_back(my_graph.last_vertice);
+
+        while (my_graph.store_path1[vertex1] != -1){
+            path1.push_back(my_graph.store_path1[vertex1]);
+            vertex1 = my_graph.store_path1[vertex1];
+        }
+
+        index_draw_path1 = path1.size() - 2;
     }
 
+
+
     if (index < my_graph.store_searching_path.size() - 1 && !path_drawn){
+
+        if (my_graph.store_searching_path1.size() > index){
+
+            int vertex1 = my_graph.store_searching_path1[index];
+            QPair <int, int> coordinates_of_vertex1 = {vertex1 / cells_width, vertex1 % cells_width};
+            cells[coordinates_of_vertex1.first][coordinates_of_vertex1.second] = -1;
+
+        }
+
         int vertex = my_graph.store_searching_path[index];
-        int vertex1 = my_graph.store_searching_path1[index];
-        index++;
-
         QPair <int, int> coordinates_of_vertex = {vertex / cells_width, vertex % cells_width};
-        QPair <int, int> coordinates_of_vertex1 = {vertex1 / cells_width, vertex1 % cells_width};
-
         cells[coordinates_of_vertex.first][coordinates_of_vertex.second] = 1;
-        cells[coordinates_of_vertex1.first][coordinates_of_vertex1.second] = -1;
+
+        index++;
 
         if (index == my_graph.store_searching_path.size() - 1)
             path_drawn = true;
 
     }   else {
 
-        if (index_draw_path > 0){
+        if (index_draw_path >= 0){
             QPair <int, int> coordinates = {path[index_draw_path] / cells_width, path[index_draw_path] % cells_width};
             cells[coordinates.first][coordinates.second] = 3;
             index_draw_path--;
+        }
+
+        if (index_draw_path1 > 0) {
+        QPair <int, int> coordinates1 = {path1[index_draw_path1] / cells_width, path1[index_draw_path1] % cells_width};
+        cells[coordinates1.first][coordinates1.second] = 3;
+        index_draw_path1--;
 
         }
+
     }
 }
 
 
 
-
-
-
-
-
+//

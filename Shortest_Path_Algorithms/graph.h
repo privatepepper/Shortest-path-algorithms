@@ -23,11 +23,13 @@ public:
         if (matrix.size() != 0){
             matrix.clear();
             visited.clear();
+            visited1.clear();
         }
 
         store_searching_path.clear();
         store_searching_path1.clear();
         store_path.clear();
+        store_path1.clear();
         matrix.resize(nodes);
     }
 
@@ -38,12 +40,16 @@ public:
     QVector <int> store_searching_path;
     QVector <int> store_searching_path1;
     QVector <int> store_path;
+    QVector <int> store_path1;
+
 
     bool BFS(int start, int end);
     bool DFS(int start, int end);
     bool dijkstra_algorithm(int start, int end);
     bool heuristic_algorithm(int start, int end);
     bool Double_BFS(int start, int end);
+
+    int last_vertice;
 
 private:
 
@@ -62,8 +68,6 @@ private:
 };
 
 #endif // GRAPH_H
-
-
 
 
 

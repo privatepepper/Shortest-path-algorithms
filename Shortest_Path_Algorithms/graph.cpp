@@ -218,7 +218,8 @@ bool Graph::Double_BFS(int start, int end) {
     for (int i = 0; i < Vertices; i++){
         visited.push_back(false);
         store_path.push_back(-1);
-        visited1.push_front(false);
+        store_path1.push_back(-1);
+        visited1.push_back(false);
     }
 
     QList <int> queue;
@@ -259,13 +260,17 @@ bool Graph::Double_BFS(int start, int end) {
                 store_searching_path1.push_back(matrix[end1][i]);
                 visited1[matrix[end1][i]] = true;
                 queue1.push_back(matrix[end1][i]);
-                store_path[ matrix[end1][i] ] = end1;
+                store_path1[ matrix[end1][i] ] = end1;
+
+
 
             }
         }
+
         if (collided()){
             return true;
         }
+
     }
 
     return false;
@@ -274,9 +279,10 @@ bool Graph::Double_BFS(int start, int end) {
 bool Graph::collided() {
 
     for (int i = 0; i < visited.size(); i++){
-            if (visited[i] && visited1[i]){
-                return true;
-            }
+        if (visited[i] && visited1[i]){
+            last_vertice = i;
+            return true;
+        }
 
     }
     return false;
@@ -322,6 +328,9 @@ bool Graph::recursive_DFS(int source, int end)
 // Heuristic search
 
 // if cell has more than 1 choise , copy path and add to the vector?
+
+
+
 
 
 

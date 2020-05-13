@@ -32,7 +32,9 @@ private:
     int end;
     int index = 0;
     QVector <int> path;
+    QVector <int> path1;
     int index_draw_path = 0;
+    int index_draw_path1 = 0;
 
     void initialize_algorithm(int algorithm_name);
 

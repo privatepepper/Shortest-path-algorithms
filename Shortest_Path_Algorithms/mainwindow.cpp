@@ -179,7 +179,6 @@ void MainWindow::on_pushButton_2_clicked()
     boolean_start = true;
 }
 
-// fix clear button
 
 
 
