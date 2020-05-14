@@ -45,7 +45,7 @@ private:
     void Heuristic_algorithm();
 
 
-
+    //  sub_functions
     void shortest_path(int destination, QVector <int> &Path, int &Path_size, QVector <int> Store_path);
     void draw_path(int &index, QVector <int> path);
     void visualize_searching(QVector <int> stored_path);

@@ -325,10 +325,6 @@ bool Graph::recursive_DFS(int source, int end)
     return false;
 }
 
-// Heuristic search
-
-// if cell has more than 1 choise , copy path and add to the vector?
-
 
 
 
