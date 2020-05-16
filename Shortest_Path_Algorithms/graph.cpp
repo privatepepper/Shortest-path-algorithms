@@ -1,11 +1,12 @@
 #include "graph.h"
+//#include "Node_Class.h"
 #include <cmath>
 
 #define east 2
 #define west 1
 #define north 0
 #define south 3
-
+typedef QVector <int> Node;  // - {node_position, h.cost, g.cost, parent}
 
 Graph::Graph()
 {
@@ -170,7 +171,7 @@ QVector <QPair<int, int>> Graph::smallest_cell_value(int start) {
 }
 
 
-
+// fix BFS algorithm
 
 bool Graph::BFS(int start, int end)
 {
@@ -290,6 +291,8 @@ bool Graph::collided() {
 
 
 
+
+
 bool Graph::DFS(int start, int end) {
 
     for (int i = 0; i < Vertices; i++){
@@ -324,6 +327,127 @@ bool Graph::recursive_DFS(int source, int end)
 
     return false;
 }
+
+//{node_position, h.cost, g.cost, parent}
+
+bool Graph::A_Star_Algorithm(int start, int end) {
+
+    end_x = end % width;
+    end_y = end / width;
+
+    QList <Node> openSet;
+    QList <Node> closedSet;
+
+    for (int i = 0; i < Vertices; i++){
+        store_nodes.push_back({i, INT_MAX, INT_MAX, -1});
+    }
+
+    Node first_node = {start, 0, 0, -1};
+    store_nodes[first_node[0]] = first_node;
+
+    openSet.push_back(first_node);
+
+    while (!openSet.empty()){
+
+        Node current_node = openSet[0];
+
+        for (int i = 1; i < openSet.size(); i++){
+
+            if ( ( f_cost(openSet[i]) < f_cost(current_node) ) || ( f_cost(openSet[i]) == f_cost(current_node) && openSet[i][1] < current_node[1] ) ){
+                current_node = openSet[i];
+            }
+        }
+
+        remove(openSet, current_node[0]);
+        closedSet.push_back(current_node);
+
+        if (current_node[0] == end){
+            RetracePath(start, current_node);
+            return true;
+        }
+
+        for (Node neighbour : getNeighbours(current_node)){
+
+            if (cointains(neighbour[0], closedSet))
+                continue;
+
+                int newMovementCostToNeighbour = current_node[2] + 1;
+                if (newMovementCostToNeighbour < neighbour[2] || !openSet.contains(neighbour)) {
+
+                    neighbour[2] = newMovementCostToNeighbour;
+                    neighbour[1] = Manhattan_Distance(neighbour[0]);
+                    neighbour[3] = current_node[0];
+                    store_searching_path.push_back(neighbour[0]);
+
+                    store_nodes[neighbour[0]] = neighbour;
+
+                    if (!openSet.contains(neighbour))
+                        openSet.push_back(neighbour);
+                }
+
+
+        }
+    }
+
+    return false;
+}
+
+
+int Graph::Manhattan_Distance(int vertex){
+
+    int y = vertex / width;
+    int x = vertex % width;
+    return abs(x - end_x) + abs(y - end_y);;
+}
+
+QList <Node> Graph::getNeighbours(Node vertex){
+
+    QList <Node> neighbours;
+
+    for (int i = 0; i < matrix[vertex[0]].size(); i++){
+        neighbours.push_back({matrix[vertex[0]][i], INT_MAX, INT_MAX, 0});
+    }
+
+    return neighbours;
+}
+
+int Graph::f_cost(QVector<int> node){
+
+    return Manhattan_Distance(node[0]) + node[2];
+}
+
+void Graph::remove(QList<QVector<int> > &openList, int node){
+
+    for (int i = 0; i < openList.size(); i++){
+        if (openList[i][0] == node){
+            openList.removeAt(i); // works?
+        }
+    }
+}
+
+bool Graph::cointains(int node, QList <QVector <int>> closedlist) {
+
+    for (int i = 0; i < closedlist.size(); i++){
+        if (closedlist[i][0] == node){
+            return true;
+        }
+    }
+    return false;
+}
+
+void Graph::RetracePath(int start, Node end) {
+
+    Node currentNode = end;
+
+    while (currentNode[0] != start){
+        A_star_path.push_back(currentNode[0]);
+        currentNode = store_nodes[currentNode[3]];
+    }
+
+}
+
+
+
 
 
 

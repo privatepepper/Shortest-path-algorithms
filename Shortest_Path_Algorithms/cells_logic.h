@@ -38,11 +38,12 @@ private:
     // algorithms
     void initialize_algorithm(int algorithm_name);
 
-    void breadth_first_search();
-    void Depth_First_Search();
+    void Breadth_first_search();
+    void Depth_first_search();
     void Dijkstra_algorithm();
     void Breadth_first_Search_2();
     void Heuristic_algorithm();
+    void A_star_lgorithm();
 
 
     //  sub_functions

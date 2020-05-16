@@ -33,11 +33,11 @@ void cells_logic::initialize_cells() {
 void cells_logic::update_cells(QString algorithm) {
 
     if (algorithm == "Breadth-first Search")
-        breadth_first_search();
+        Breadth_first_search();
 
 
     if (algorithm == "Depth-first Searsh")
-        Depth_First_Search();
+        Depth_first_search();
 
 
     if (algorithm == "Dijkstra's algorithm")
@@ -45,8 +45,12 @@ void cells_logic::update_cells(QString algorithm) {
 
     if (algorithm == "Heuristic Search")
         Heuristic_algorithm();
+
     if (algorithm == "Breadth-first Search.2")
         Breadth_first_Search_2();
+
+    if (algorithm == "A* Search")
+        A_star_lgorithm();
 }
 
 
@@ -102,17 +106,19 @@ void cells_logic::initialize_algorithm(int algorithm_name)
         case 3:my_graph.heuristic_algorithm(start, end);break;
 
         case 4:my_graph.Double_BFS(start, end);break;
+
+        case 5:my_graph.A_Star_Algorithm(start, end);break;
     }
 }
 
 
 
-void cells_logic::breadth_first_search() {
+void cells_logic::Breadth_first_search() {
     if (!done){
 
         initialize_algorithm(0);
+        shortest_path(end, path, index_draw_path, my_graph.store_path);
         done = true;
-        shortest_path(end, path, index_draw_path, my_graph.store_path);   
     }
 
     if (index < my_graph.store_searching_path.size() - 1){
@@ -129,7 +135,7 @@ void cells_logic::breadth_first_search() {
 
 
 
-void cells_logic::Depth_First_Search() {
+void cells_logic::Depth_first_search() {
 
     if (!done){
 
@@ -183,6 +189,31 @@ void cells_logic::Heuristic_algorithm()
 
         visualize_searching(my_graph.store_searching_path);
         index++;
+
+    }
+
+}
+
+void cells_logic::A_star_lgorithm() {
+
+    if (!done){
+
+        initialize_algorithm(5);
+        path = my_graph.A_star_path;
+        index_draw_path = path.size() - 1;
+        done = true;
+
+    }
+
+    if (index < my_graph.store_searching_path.size() - 1){
+
+        visualize_searching(my_graph.store_searching_path);
+        index++;
+
+    }   else {
+
+        if (index_draw_path > 0)
+            draw_path(index_draw_path, path);
 
     }
 

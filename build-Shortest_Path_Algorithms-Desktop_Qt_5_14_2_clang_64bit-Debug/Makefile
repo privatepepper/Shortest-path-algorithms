@@ -270,7 +270,8 @@ DIST          = /Users/L/Qt/5.14.2/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/L/Qt/5.14.2/clang_64/mkspecs/features/exceptions.prf \
 		/Users/L/Qt/5.14.2/clang_64/mkspecs/features/yacc.prf \
 		/Users/L/Qt/5.14.2/clang_64/mkspecs/features/lex.prf \
-		../Shortest_Path_Algorithms/Shortest_Path_Algorithms.pro ../Shortest_Path_Algorithms/cells_logic.h \
+		../Shortest_Path_Algorithms/Shortest_Path_Algorithms.pro ../Shortest_Path_Algorithms/Node_Class.h \
+		../Shortest_Path_Algorithms/cells_logic.h \
 		../Shortest_Path_Algorithms/graph.h \
 		../Shortest_Path_Algorithms/mainwindow.h ../Shortest_Path_Algorithms/cells_logic.cpp \
 		../Shortest_Path_Algorithms/graph.cpp \
@@ -755,7 +756,7 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/L/Qt/5.14.2/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../Shortest_Path_Algorithms/cells_logic.h ../Shortest_Path_Algorithms/graph.h ../Shortest_Path_Algorithms/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Shortest_Path_Algorithms/Node_Class.h ../Shortest_Path_Algorithms/cells_logic.h ../Shortest_Path_Algorithms/graph.h ../Shortest_Path_Algorithms/mainwindow.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../Shortest_Path_Algorithms/cells_logic.cpp ../Shortest_Path_Algorithms/graph.cpp ../Shortest_Path_Algorithms/main.cpp ../Shortest_Path_Algorithms/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Shortest_Path_Algorithms/mainwindow.ui $(DISTDIR)/
 

@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItem("Depth-first Searsh");
     ui->comboBox->addItem("Breadth-first Search.2");
     ui->comboBox->addItem("Heuristic Search");
+    ui->comboBox->addItem("A* Search");
+
     for (int i = 0; i < ui->comboBox->count(); i++){
         ui->comboBox->setItemData(i, Qt::AlignCenter, Qt::TextAlignmentRole);
     }

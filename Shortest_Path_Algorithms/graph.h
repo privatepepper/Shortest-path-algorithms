@@ -30,6 +30,7 @@ public:
         store_searching_path1.clear();
         store_path.clear();
         store_path1.clear();
+        A_star_path.clear();
         matrix.resize(nodes);
     }
 
@@ -48,8 +49,10 @@ public:
     bool dijkstra_algorithm(int start, int end);
     bool heuristic_algorithm(int start, int end);
     bool Double_BFS(int start, int end);
+    bool A_Star_Algorithm(int start, int end);
 
     int last_vertice;
+    QVector <int> A_star_path;
 
 private:
 
@@ -64,6 +67,17 @@ private:
     QVector <QVector <int> > direction_vertice;
     QVector <QPair <int, int>> smallest_cell_value(int current_vertice);
     bool collided();
+
+    int Manhattan_Distance(int node);
+    int f_cost(QVector <int> node);
+    void remove(QList <QVector <int>> &openList, int node);
+
+    QList <QVector <int>> getNeighbours(QVector <int> node);
+    void RetracePath(int start, QVector <int> end);
+    QList <QVector <int>> store_nodes;
+
+    bool cointains(int node, QList <QVector <int>> closedlist);
+
 
 };
 

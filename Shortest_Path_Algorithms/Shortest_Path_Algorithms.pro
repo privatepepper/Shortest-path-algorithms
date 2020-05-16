@@ -22,6 +22,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    Node_Class.h \
     cells_logic.h \
     graph.h \
     mainwindow.h
