@@ -2,7 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QSlider>
 
-#define wall 2;
+#define wall 2
+#define painted 99
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -76,6 +77,18 @@ void MainWindow::reset_cells()
 
 }
 
+void MainWindow::reset_colors() {
+
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+
+            if (vec.cells[y][x] == painted)
+                cells[y][x]->setBrush(path_finding_visualization);
+
+        }
+    }
+}
+
 
 void MainWindow::initialize_cells()
 {
@@ -119,14 +132,17 @@ void MainWindow::update_cells()
             add_edge_one_time = false;
         }
         vec.update_cells(ui->comboBox->lineEdit()->text());
+        reset_colors();
         for (int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
 
                 if (vec.cells[y][x] == 0)
                     cells[y][x]->setBrush(inner_cells_brush);
 
-                if (vec.cells[y][x] == 1)
-                    cells[y][x]->setBrush(path_finding_visualization);
+                if (vec.cells[y][x] == 1){
+                    cells[y][x]->setBrush(Qt::green);
+                    vec.cells[y][x] = painted;
+                }
 
                 if (vec.cells[y][x] == -1)
                     cells[y][x]->setBrush(Qt::red);

@@ -76,7 +76,7 @@ private:
     void RetracePath(int start, QVector <int> end);
     QList <QVector <int>> store_nodes;
 
-    bool cointains(int node, QList <QVector <int>> closedlist);
+    bool contains(int node, QList <QVector <int>> closedlist);
 
 
 };

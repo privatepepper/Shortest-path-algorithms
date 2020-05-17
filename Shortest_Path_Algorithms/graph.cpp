@@ -368,21 +368,24 @@ bool Graph::A_Star_Algorithm(int start, int end) {
 
         for (Node neighbour : getNeighbours(current_node)){
 
-            if (cointains(neighbour[0], closedSet))
+            if (contains(neighbour[0], closedSet))
                 continue;
 
                 int newMovementCostToNeighbour = current_node[2] + 1;
-                if (newMovementCostToNeighbour < neighbour[2] || !openSet.contains(neighbour)) {
+                if (newMovementCostToNeighbour < neighbour[2] || !contains(neighbour[0], openSet)) {
 
                     neighbour[2] = newMovementCostToNeighbour;
                     neighbour[1] = Manhattan_Distance(neighbour[0]);
                     neighbour[3] = current_node[0];
                     store_searching_path.push_back(neighbour[0]);
 
-                    store_nodes[neighbour[0]] = neighbour;
 
-                    if (!openSet.contains(neighbour))
+
+                    if (!contains(neighbour[0], openSet)){
                         openSet.push_back(neighbour);
+                        store_nodes[neighbour[0]] = neighbour;
+
+                    }
                 }
 
 
@@ -425,10 +428,10 @@ void Graph::remove(QList<QVector<int> > &openList, int node){
     }
 }
 
-bool Graph::cointains(int node, QList <QVector <int>> closedlist) {
+bool Graph::contains(int node, QList <QVector <int>> list) {
 
-    for (int i = 0; i < closedlist.size(); i++){
-        if (closedlist[i][0] == node){
+    for (int i = 0; i < list.size(); i++){
+        if (list[i][0] == node){
             return true;
         }
     }

@@ -54,6 +54,8 @@ private:
     QBrush shortest_path_visualization;
     QBrush walls_brush;
 
+    void reset_colors();
+
 private slots:
 
     void update_cells();
