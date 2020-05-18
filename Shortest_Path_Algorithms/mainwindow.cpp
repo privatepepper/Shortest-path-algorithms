@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QSlider>
+#include "graph.h"
 
 #define wall 2
 #define painted 99
@@ -98,9 +99,39 @@ void MainWindow::initialize_cells()
         for (int x = 0; x < width; x++){
             QGraphicsRectItem *inner_cell = new QGraphicsRectItem(x * inner_cell_width, y * inner_cell_height, inner_cell_width, inner_cell_height, rect);
             inner_cell->setFlag(QGraphicsItem::ItemIsSelectable);
+            if (tree)
+                inner_cell->setPen(Qt::NoPen);
+
             inner_cell->setBrush(inner_cells_brush);
             cells[y][x] = inner_cell;
         }
+    }
+
+    if (tree) {
+
+        Graph my_graph;
+
+        my_graph.generate_random_graph();
+        QPen p = QPen(Qt::black);
+        p.setWidth(3);
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if (my_graph.random_vertixes[y][x] == 50){
+                    QGraphicsEllipseItem *e = new QGraphicsEllipseItem(x * inner_cell_width, y * inner_cell_height, inner_cell_width, inner_cell_height, cells[y][x]);
+                    e->setPen(p);
+                }
+            }
+        }
+
+        for (int i = 0; i < my_graph.linked.size(); i++){
+            QPair < QPair <int, int > , QPair <int, int> > coords = my_graph.linked[i];
+            QGraphicsLineItem *line = new QGraphicsLineItem((coords.first.second * inner_cell_width) + (inner_cell_width / 2),
+                                                          coords.first.first * inner_cell_height + inner_cell_height,
+                                                            (coords.second.second * inner_cell_width) + (inner_cell_width / 2),
+                                                            coords.second.first * inner_cell_height, rect);
+            line->setPen(p);
+        }
+
     }
 }
 
@@ -173,7 +204,7 @@ void MainWindow::on_pushButton_clicked(){
 
 void MainWindow::keyPressEvent(QKeyEvent *event){
 
-    if (event->key() == Qt::Key_Space){
+    if (event->key() == Qt::Key_Space && !boolean_start){
 
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
@@ -197,8 +228,12 @@ void MainWindow::on_pushButton_2_clicked()
     boolean_start = true;
 }
 
+void MainWindow::on_radioButton_clicked() {
 
+    if (tree == true)
+        tree = false;
+    else
+        tree = true;
 
-
-
-
+    on_pushButton_clicked();
+}

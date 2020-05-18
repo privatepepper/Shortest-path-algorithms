@@ -45,6 +45,7 @@ private:
 
     bool boolean_start = false;
     bool add_edge_one_time = true;
+    bool tree = false;
 
     // colors
     QBrush inner_cells_brush;
@@ -56,6 +57,7 @@ private:
 
     void reset_colors();
 
+
 private slots:
 
     void update_cells();
@@ -65,6 +67,9 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+
+
+    void on_radioButton_clicked();
 
 protected:
 

@@ -16,6 +16,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -33,6 +34,7 @@ public:
     QPushButton *pushButton_2;
     QPushButton *pushButton;
     QComboBox *comboBox;
+    QRadioButton *radioButton;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -133,6 +135,11 @@ public:
 
         verticalLayout->addLayout(horizontalLayout);
 
+        radioButton = new QRadioButton(centralwidget);
+        radioButton->setObjectName(QString::fromUtf8("radioButton"));
+
+        verticalLayout->addWidget(radioButton);
+
         MainWindow->setCentralWidget(centralwidget);
 
         retranslateUi(MainWindow);
@@ -145,6 +152,7 @@ public:
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
         pushButton_2->setText(QCoreApplication::translate("MainWindow", "Start", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Clear", nullptr));
+        radioButton->setText(QCoreApplication::translate("MainWindow", "Generate random tree", nullptr));
     } // retranslateUi
 
 };

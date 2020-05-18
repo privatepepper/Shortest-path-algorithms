@@ -111,6 +111,13 @@ border-radius: 4px;
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QRadioButton" name="radioButton">
+      <property name="text">
+       <string>Generate random tree</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
  </widget>

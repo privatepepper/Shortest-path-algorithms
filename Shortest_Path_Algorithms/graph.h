@@ -54,6 +54,10 @@ public:
     int last_vertice;
     QVector <int> A_star_path;
 
+    QVector < QVector <int>> random_vertixes;
+    void generate_random_graph();
+    QVector < QPair < QPair <int, int > , QPair <int, int> >> linked;
+
 private:
 
 
@@ -78,6 +82,10 @@ private:
 
     bool contains(int node, QList <QVector <int>> closedlist);
 
+    int current_y;
+    int current_x;
+    void random_coordinates();
+    bool check_around();
 
 };
 

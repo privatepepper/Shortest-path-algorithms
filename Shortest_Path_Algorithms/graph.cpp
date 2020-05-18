@@ -6,10 +6,13 @@
 #define west 1
 #define north 0
 #define south 3
+
+#define Vertex 50
+
 typedef QVector <int> Node;  // - {node_position, h.cost, g.cost, parent}
 
-Graph::Graph()
-{
+Graph::Graph() {
+
     qsrand(QDateTime::currentMSecsSinceEpoch() / 1000);
 }
 
@@ -58,8 +61,6 @@ bool Graph::dijkstra_algorithm(int start, int end)
 
     return false;
 }
-
-
 
 bool Graph::heuristic_algorithm(int start, int end)
 {
@@ -169,9 +170,6 @@ QVector <QPair<int, int>> Graph::smallest_cell_value(int start) {
     else
         return {{smallest_y.first, smallest_y.second}, {smallest_x.first, smallest_x.second}};
 }
-
-
-// fix BFS algorithm
 
 bool Graph::BFS(int start, int end)
 {
@@ -289,10 +287,6 @@ bool Graph::collided() {
     return false;
 }
 
-
-
-
-
 bool Graph::DFS(int start, int end) {
 
     for (int i = 0; i < Vertices; i++){
@@ -327,8 +321,6 @@ bool Graph::recursive_DFS(int source, int end)
 
     return false;
 }
-
-//{node_position, h.cost, g.cost, parent}
 
 bool Graph::A_Star_Algorithm(int start, int end) {
 
@@ -395,7 +387,6 @@ bool Graph::A_Star_Algorithm(int start, int end) {
     return false;
 }
 
-
 int Graph::Manhattan_Distance(int vertex){
 
     int y = vertex / width;
@@ -449,7 +440,101 @@ void Graph::RetracePath(int start, Node end) {
 
 }
 
+void Graph::generate_random_graph() {
 
+    initialize_matrix(width * height);
+
+    int previous_y;
+    int previous_x;
+
+    random_vertixes.resize(height * width);
+    for (int y = 0; y < height; y++){
+        for (int x = 0; x < width; x++){
+            random_vertixes[y].push_back(0);
+        }
+    }
+
+    current_y = 1;
+    current_x = width / 2;
+    random_vertixes[current_y][current_x] = Vertex;
+
+    while (true) {
+
+        previous_x = current_x;
+        previous_y = current_y;
+        random_coordinates();
+
+        random_vertixes[current_y][current_x] = Vertex;
+
+        addEdge( ( (previous_y * width) + (previous_x % width) ), ( (current_y * width) + (current_x % width) ) );
+        QPair < QPair <int, int > , QPair <int, int> > coords = {{previous_y, previous_x}, {current_y, current_x}};
+        linked.push_back(coords);
+
+        if (qrand() % 3 == 0){
+            current_y = previous_y;
+            current_x = previous_x;
+        }
+
+        if (current_y > height - 5)
+            break;
+    }
+}
+
+void Graph::random_coordinates() {
+
+    int w = 0, h = 0;
+
+    do {
+        current_y -= h;
+        current_x -= w;
+        h = (qrand() % 2) + 1;
+        if (qrand() % 2 == 0)
+            w = (qrand() % 4) + 0;
+        else
+            w = (qrand() % 1) -3;
+
+        current_x += w;
+        current_y += h;
+
+    } while (current_x <= 0 || current_x >= width - 2 || current_y >= width -2 || check_around());
+}
+
+bool Graph::check_around() {
+
+    if (current_x != width - 1){
+        if (random_vertixes[current_y][current_x + 1] == Vertex)
+            return true;
+    }
+    if (current_x != 0){
+        if (random_vertixes[current_y][current_x - 1] == Vertex)
+            return true;
+    }
+    if (current_y != height - 1){
+        if (random_vertixes[current_y + 1][current_x] == Vertex)
+            return true;
+    }
+    if (current_y != 0){
+        if (random_vertixes[current_y - 1][current_x] == Vertex)
+            return true;
+    }
+    if (current_x != 0 && current_y != 0){
+        if (random_vertixes[current_y - 1][current_x - 1] == Vertex)
+            return true;
+    }
+    if (current_x != width - 1 && current_y != height - 1){
+        if (random_vertixes[current_y + 1][current_x + 1] == Vertex)
+            return true;
+    }
+    if (current_x != 0 && current_y != height - 1){
+        if (random_vertixes[current_y + 1][current_x - 1] == Vertex)
+            return true;
+    }
+    if (current_x != width - 1 && current_y != 0){
+        if (random_vertixes[current_y - 1][current_x + 1] == Vertex)
+            return true;
+    }
+    return false;
+}
 
 
 
