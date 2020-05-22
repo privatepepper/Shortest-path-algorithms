@@ -24,6 +24,7 @@ private:
     Ui::MainWindow *ui;
 
     cells_logic vec;
+    //Graph my_graph;
 
     int height = vec.cells_height;
     int width = vec.cells_width;
@@ -38,6 +39,7 @@ private:
     void reset_cells();
 
     QVector <QVector < QGraphicsRectItem* > > cells;
+    QVector <QVector < QGraphicsEllipseItem* > > ellipses;
     int cells_selected = 0;
 
     QTimer *timer;
@@ -46,6 +48,7 @@ private:
     bool boolean_start = false;
     bool add_edge_one_time = true;
     bool tree = false;
+    bool tree1 = false;
 
     // colors
     QBrush inner_cells_brush;
@@ -56,6 +59,9 @@ private:
     QBrush walls_brush;
 
     void reset_colors();
+
+    void search_start_end();
+
 
 
 private slots:

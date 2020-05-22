@@ -57,6 +57,7 @@ void cells_logic::update_cells(QString algorithm) {
 
 
 void cells_logic::add_eges() {
+
     int count = 0;
     for (int y = 0; y < cells_height; y++){
         for (int x = 0; x < cells_width; x++){

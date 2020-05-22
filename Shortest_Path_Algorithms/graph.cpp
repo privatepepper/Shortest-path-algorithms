@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "mainwindow.h"
 //#include "Node_Class.h"
 #include <cmath>
 
@@ -173,6 +174,7 @@ QVector <QPair<int, int>> Graph::smallest_cell_value(int start) {
 
 bool Graph::BFS(int start, int end)
 {
+    //count_vertices();
 
     for (int i = 0; i < Vertices; i++){
         visited.push_back(false);
@@ -442,11 +444,15 @@ void Graph::RetracePath(int start, Node end) {
 
 void Graph::generate_random_graph() {
 
+    graph_mode = true;
+
+    if (random_vertixes.size() != 0)
+        random_vertixes.clear();
+
+    if (linked.size() != 0)
+        linked.clear();
+
     initialize_matrix(width * height);
-
-    int previous_y;
-    int previous_x;
-
     random_vertixes.resize(height * width);
     for (int y = 0; y < height; y++){
         for (int x = 0; x < width; x++){
@@ -458,26 +464,11 @@ void Graph::generate_random_graph() {
     current_x = width / 2;
     random_vertixes[current_y][current_x] = Vertex;
 
-    while (true) {
+    generate_tree(current_y, current_x);
 
-        previous_x = current_x;
-        previous_y = current_y;
-        random_coordinates();
+    //check_under();
+    //check_under();
 
-        random_vertixes[current_y][current_x] = Vertex;
-
-        addEdge( ( (previous_y * width) + (previous_x % width) ), ( (current_y * width) + (current_x % width) ) );
-        QPair < QPair <int, int > , QPair <int, int> > coords = {{previous_y, previous_x}, {current_y, current_x}};
-        linked.push_back(coords);
-
-        if (qrand() % 3 == 0){
-            current_y = previous_y;
-            current_x = previous_x;
-        }
-
-        if (current_y > height - 5)
-            break;
-    }
 }
 
 void Graph::random_coordinates() {
@@ -534,6 +525,72 @@ bool Graph::check_around() {
             return true;
     }
     return false;
+}
+
+void Graph::generate_tree(int source_y, int source_x) {
+
+    int previous_x, previous_y;
+
+    current_y = source_y;
+    current_x = source_x;
+
+    while (true) {
+
+        previous_x = current_x;
+        previous_y = current_y;
+        random_coordinates();
+
+        random_vertixes[current_y][current_x] = Vertex;
+
+        addEdge( ( (previous_y * width) + (previous_x % width) ), ( (current_y * width) + (current_x % width) ) );
+        QPair < QPair <int, int > , QPair <int, int> > coords = {{previous_y, previous_x}, {current_y, current_x}};
+        linked.push_back(coords);
+
+        if (qrand() % 2 == 0){
+            current_y = previous_y;
+            current_x = previous_x;
+        }
+
+        if (current_y > height - 5)
+            break;
+    }
+}
+
+void Graph::check_under() {
+
+    int y, x;
+
+    for (int i = 0;i < linked.size(); i++){
+
+        int count = 0;
+        QPair <int, int> node = linked[i].first;
+
+        y = node.first;
+        x = node.second;
+        int y_clone = y + 1;
+
+        while(random_vertixes[y][x] == 0 && y > height - 3){
+            y_clone++;
+            count++;
+        }
+
+        if (count == 0){
+            generate_tree(y, x);
+            break;
+        }
+    }
+}
+
+void Graph::count_vertices() {
+
+   Vertices = 0;
+    for (int y = 0; y < random_vertixes.size(); y++){
+        for (int x : random_vertixes[y]){
+            if (x == Vertex)
+                Vertices++;
+        }
+    }
+
 }
 
 

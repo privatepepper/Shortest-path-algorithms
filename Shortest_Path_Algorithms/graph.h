@@ -18,8 +18,11 @@ public:
     QVector <QVector <int> > matrix;
 
     void initialize_matrix(int nodes){
+        //if (!graph_mode){
         Vertices = nodes;
 
+
+      //  }
         if (matrix.size() != 0){
             matrix.clear();
             visited.clear();
@@ -31,6 +34,7 @@ public:
         store_path.clear();
         store_path1.clear();
         A_star_path.clear();
+
         matrix.resize(nodes);
     }
 
@@ -86,6 +90,12 @@ private:
     int current_x;
     void random_coordinates();
     bool check_around();
+    void generate_tree(int source_y, int source_x);
+    void check_under();
+
+    void count_vertices();
+
+    bool graph_mode = false;
 
 };
 

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QSlider>
-#include "graph.h"
+//#include "graph.h"
 
 #define wall 2
 #define painted 99
@@ -66,13 +66,21 @@ void MainWindow::reset_cells()
     add_edge_one_time = true;
     boolean_start = false;
 
-    cells.clear();
+    if (cells.size() != 0)
+        cells.clear();
+
+    if (ellipses.size() != 0)
+        ellipses.clear();
+
     cells.resize(width * height);
+    ellipses.resize(width * height);
 
     for (int y = 0; y < height; y++){
         QGraphicsRectItem *nothing;
+        QGraphicsEllipseItem *nothing_e;
         for (int x = 0; x < width; x++){
             cells[y].push_back(nothing);
+            ellipses[y].push_back(nothing_e);
         }
     }
 
@@ -90,6 +98,61 @@ void MainWindow::reset_colors() {
     }
 }
 
+void MainWindow::search_start_end()
+{
+    if (tree1){
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if (vec.my_graph.random_vertixes[y][x] == 50){
+
+                    if (ellipses[y][x]->isSelected() && cells_selected == 0){
+
+                        if (ellipses[y][x]->isSelected())
+                            ellipses[y][x]->setBrush(start_brush);
+
+                        vec.cells[y][x] = -5;
+                        cells_selected++;
+                        continue;
+                    }
+
+                    if (ellipses[y][x]->isSelected() && cells_selected == 1 && vec.cells[y][x] == 0){
+
+                        if (ellipses[y][x]->isSelected())
+                            ellipses[y][x]->setBrush(end_brush);
+
+                        vec.cells[y][x] = 5;
+                        cells_selected++;
+                    }
+                }
+            }
+        }
+    }else {
+
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if ((cells[y][x]->isSelected() && cells_selected == 0 && vec.cells[y][x] == 0)){
+
+                    if (cells[y][x]->isSelected())
+                        cells[y][x]->setBrush(start_brush);
+
+                    vec.cells[y][x] = -5;
+                    cells_selected++;
+                }
+                if ((cells[y][x]->isSelected() && cells_selected == 1 && vec.cells[y][x] == 0)){
+
+                    if (cells[y][x]->isSelected())
+                        cells[y][x]->setBrush(end_brush);
+
+                    vec.cells[y][x] = 5;
+                    cells_selected++;
+                }
+            }
+        }
+    }
+
+}
+
 
 void MainWindow::initialize_cells()
 {
@@ -98,10 +161,11 @@ void MainWindow::initialize_cells()
     for (int y = 0; y < height; y++){
         for (int x = 0; x < width; x++){
             QGraphicsRectItem *inner_cell = new QGraphicsRectItem(x * inner_cell_width, y * inner_cell_height, inner_cell_width, inner_cell_height, rect);
-            inner_cell->setFlag(QGraphicsItem::ItemIsSelectable);
+
             if (tree)
                 inner_cell->setPen(Qt::NoPen);
-
+            else
+                inner_cell->setFlag(QGraphicsItem::ItemIsSelectable);
             inner_cell->setBrush(inner_cells_brush);
             cells[y][x] = inner_cell;
         }
@@ -109,29 +173,30 @@ void MainWindow::initialize_cells()
 
     if (tree) {
 
-        Graph my_graph;
-
-        my_graph.generate_random_graph();
+       vec.my_graph.generate_random_graph();
         QPen p = QPen(Qt::black);
         p.setWidth(3);
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
-                if (my_graph.random_vertixes[y][x] == 50){
+                if (vec.my_graph.random_vertixes[y][x] == 50){
                     QGraphicsEllipseItem *e = new QGraphicsEllipseItem(x * inner_cell_width, y * inner_cell_height, inner_cell_width, inner_cell_height, cells[y][x]);
+                    e->setFlag(QGraphicsItem::ItemIsSelectable);
                     e->setPen(p);
+                    ellipses[y][x] = e;
                 }
             }
         }
 
-        for (int i = 0; i < my_graph.linked.size(); i++){
-            QPair < QPair <int, int > , QPair <int, int> > coords = my_graph.linked[i];
+        // connect lines
+        for (int i = 0; i < vec.my_graph.linked.size(); i++){
+            QPair < QPair <int, int > , QPair <int, int> > coords = vec.my_graph.linked[i];
             QGraphicsLineItem *line = new QGraphicsLineItem((coords.first.second * inner_cell_width) + (inner_cell_width / 2),
                                                           coords.first.first * inner_cell_height + inner_cell_height,
                                                             (coords.second.second * inner_cell_width) + (inner_cell_width / 2),
                                                             coords.second.first * inner_cell_height, rect);
             line->setPen(p);
         }
-
+        tree1 = true;
     }
 }
 
@@ -141,33 +206,33 @@ void MainWindow::initialize_cells()
 
 void MainWindow::update_cells()
 {
+
     if (cells_selected < 2){
-        for (int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                if (cells[y][x]->isSelected() && cells_selected == 0 && vec.cells[y][x] == 0){
-                    vec.cells[y][x] = -5;
-                    cells[y][x]->setBrush(start_brush);
-                    cells_selected++;
-                }
-                if (cells[y][x]->isSelected() && cells_selected == 1 && vec.cells[y][x] == 0){
-                    vec.cells[y][x] = 5;
-                    cells[y][x]->setBrush(end_brush);
-                    cells_selected++;
-                }
-            }
-        }
+        search_start_end();
     }
+
     if (boolean_start){
-        if (add_edge_one_time){
+
+        if (add_edge_one_time && !tree){
             vec.add_eges();
             add_edge_one_time = false;
         }
-        vec.update_cells(ui->comboBox->lineEdit()->text());
+        if (tree && (ui->comboBox->lineEdit()->text() != "Breadth-first Search.2" || ui->comboBox->lineEdit()->text() != "Heuristic Search") )
+            vec.update_cells(ui->comboBox->lineEdit()->text());
+        else {
+            QMessageBox::warning(this, "Warning", "This algorithm doesn't work with binary tree");
+            boolean_start = false;
+        }
+
+        if (!tree)
+            vec.update_cells(ui->comboBox->lineEdit()->text());
+
         reset_colors();
         for (int y = 0; y < height; y++){
             for(int x = 0; x < width; x++){
 
                 if (vec.cells[y][x] == 0)
+
                     cells[y][x]->setBrush(inner_cells_brush);
 
                 if (vec.cells[y][x] == 1){
@@ -179,8 +244,15 @@ void MainWindow::update_cells()
                     cells[y][x]->setBrush(Qt::red);
 
                 // shortest path
-                if (vec.cells[y][x] == 3)
-                    cells[y][x]->setBrush(shortest_path_visualization);
+                if (vec.cells[y][x] == 3){
+
+                    if (!tree)
+                        cells[y][x]->setBrush(shortest_path_visualization);
+                    else
+                        ellipses[y][x]->setBrush(shortest_path_visualization);
+
+                }
+
 
             }
         }
@@ -230,10 +302,11 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_radioButton_clicked() {
 
-    if (tree == true)
+    if (tree == true){
         tree = false;
-    else
+    } else
         tree = true;
 
+    tree1 = tree;
     on_pushButton_clicked();
 }
