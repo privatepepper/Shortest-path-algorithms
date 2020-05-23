@@ -217,12 +217,15 @@ void MainWindow::update_cells()
             vec.add_eges();
             add_edge_one_time = false;
         }
-        if (tree && (ui->comboBox->lineEdit()->text() != "Breadth-first Search.2" || ui->comboBox->lineEdit()->text() != "Heuristic Search") )
+        if (tree && (ui->comboBox->lineEdit()->text() != "Breadth-first Search.2" && ui->comboBox->lineEdit()->text() != "Heuristic Search") )
             vec.update_cells(ui->comboBox->lineEdit()->text());
-        else {
+        else if (!tree) {
+            vec.update_cells(ui->comboBox->lineEdit()->text());
+        } else {
             QMessageBox::warning(this, "Warning", "This algorithm doesn't work with binary tree");
             boolean_start = false;
         }
+
 
         if (!tree)
             vec.update_cells(ui->comboBox->lineEdit()->text());
